@@ -52,4 +52,3 @@ Si estos archivos no existen, se crearán vacíos. Si ya existen, el programa ca
 
 ## Autores
 
-Facundo Damián Lara - LU: 1176633
