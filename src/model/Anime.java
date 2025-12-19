@@ -7,18 +7,30 @@ public abstract class Anime {
     private String titulo;
     private int anioLanzamiento;
     private String estudio;
-    private int calificacion; // 1 a 5
+    private int calificacion; // 0 = sin calificar, 1 a 5 = calificado
     private EstadoAnime estado;
     private Set<GeneroAnime> generos;
 
     // Constructor: Inicializa lo básico y la colección
     public Anime(String titulo, int anioLanzamiento, String estudio) {
-        this.titulo = titulo;
+        // Validaciones simples (evita objetos inválidos)
+        if (titulo == null || titulo.trim().isEmpty()) {
+            throw new IllegalArgumentException("El título no puede estar vacío");
+        }
+        if (anioLanzamiento < 1900 || anioLanzamiento > 2100) {
+            throw new IllegalArgumentException("El año de lanzamiento parece incorrecto");
+        }
+        if (estudio == null || estudio.trim().isEmpty()) {
+            throw new IllegalArgumentException("El estudio no puede estar vacío");
+        }
+
+        this.titulo = titulo.trim();
         this.anioLanzamiento = anioLanzamiento;
-        this.estudio = estudio;
+        this.estudio = estudio.trim();
         // Valores por defecto
         this.estado = EstadoAnime.POR_VER;
         this.generos = new HashSet<>(); // Set para evitar duplicados
+        this.calificacion = 0; // Por defecto: sin calificar
     }
 
     // Método abstracto: las subclases está obligadas a implementarlo
@@ -26,6 +38,9 @@ public abstract class Anime {
 
     // Métodos de negocio básicos
     public void agregarGenero(GeneroAnime g) {
+        if (g == null) {
+            throw new IllegalArgumentException("El género no puede ser nulo");
+        }
         this.generos.add(g);
     }
 
@@ -42,6 +57,9 @@ public abstract class Anime {
         return estado;
     }
     public void setEstado(EstadoAnime estado) {
+        if (estado == null) {
+            throw new IllegalArgumentException("El estado no puede ser nulo");
+        }
         this.estado = estado;
     }
 
@@ -50,8 +68,9 @@ public abstract class Anime {
     }
 
     public void setCalificacion(int calificacion) {
+        // 0 = sin calificar (permite registrar sin puntuar)
         if (calificacion != 0 && (calificacion < 1 || calificacion > 5)) {
-            throw new IllegalArgumentException("La calificación debe estar entre 1 y 5");
+            throw new IllegalArgumentException("La calificación debe ser 0 o estar entre 1 y 5");
         }
         this.calificacion = calificacion;
     }
@@ -65,10 +84,12 @@ public abstract class Anime {
     }
 
     public void setEstudio(String estudio) {
-        this.estudio = estudio;
+        if (estudio == null || estudio.trim().isEmpty()) {
+            throw new IllegalArgumentException("El estudio no puede estar vacío");
+        }
+        this.estudio = estudio.trim();
     }
 
-    // toString para que sea fácil imprimirlo en consola al probar
     @Override
     public String toString() {
         return titulo + " (" + anioLanzamiento + ") - " + estado;
