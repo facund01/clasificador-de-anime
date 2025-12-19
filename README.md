@@ -52,3 +52,6 @@ Si estos archivos no existen, se crearán vacíos. Si ya existen, el programa ca
 
 ## Autores
 
+Lara, Facundo Damián - LU: 1176633
+Derbenti, Diego - LU: 1161176
+
